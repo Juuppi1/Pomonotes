@@ -15,20 +15,23 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
+            android:name=".NotificationTest"
+            android:exported="false" />
+        <activity
             android:name=".Notes"
+            android:alwaysRetainTaskState="true"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:alwaysRetainTaskState="true" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Timer"
+            android:alwaysRetainTaskState="true"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:alwaysRetainTaskState="true" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
+            android:alwaysRetainTaskState="true"
             android:exported="true"
-            android:screenOrientation="portrait"
-            android:alwaysRetainTaskState="true" >
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

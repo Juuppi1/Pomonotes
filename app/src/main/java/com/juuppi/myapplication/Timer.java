@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,11 +51,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         createNotificationChannel();
     }
 
-    public void DialogOpener(View v) {
-        DialogTesti dialog = new DialogTesti();
-        dialog.show(getSupportFragmentManager(), "dialog testi");
-    }
-
     public void SetTimes(int PomoInt, int BreakInt) {
         PomoMin = PomoInt;
         PomoCdText.setText(PomoMin + ":00");
@@ -67,6 +63,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         BreakTimeLeft = BreakStartTime;
     }
 
+    //Pomo timer
     public void PomoStartPauseClicked(View view) {
         if (PomoTimerRunning) {
             pausePomoTimer();
@@ -79,20 +76,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             ongoing = true;
         }
     }
-
-    public void BreakStartPauseClicked(View view) {
-        if (BreakTimerRunning) {
-            pauseBreakTimer();
-        } else if (PomoTimerRunning) {
-            pausePomoTimer();
-            startBreakTimer();
-            ongoing = true;
-        } else {
-            startBreakTimer();
-            ongoing = true;
-        }
-    }
-
     private void startPomoTimer() {
         PomoCDTimer = new CountDownTimer(PomoTimeLeft, 1000) {
             @Override
@@ -113,7 +96,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         PomoTimerRunning = true;
         PomoStartPause.setText("Pause");
     }
-
     private void pausePomoTimer() {
         PomoCDTimer.cancel();
         PomoTimerRunning = false;
@@ -125,7 +107,30 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             NotificationTesti("Pomodoro", NotifiText, ongoing);
         }
     }
+    private void updatePomoCDText() {
+        PomoMin = (int) (PomoTimeLeft / 1000) / 60;
+        PomoSec = (int) (PomoTimeLeft / 1000) % 60;
 
+        String timeLeftFormat = String.format(Locale.getDefault(), "%02d:%02d", PomoMin, PomoSec);
+        PomoCdText.setText(timeLeftFormat);
+        NotifiText = "Work: " + timeLeftFormat;
+
+        NotificationTesti("Pomodoro", NotifiText, ongoing);
+    }
+
+    //Break timer
+    public void BreakStartPauseClicked(View view) {
+        if (BreakTimerRunning) {
+            pauseBreakTimer();
+        } else if (PomoTimerRunning) {
+            pausePomoTimer();
+            startBreakTimer();
+            ongoing = true;
+        } else {
+            startBreakTimer();
+            ongoing = true;
+        }
+    }
     private void startBreakTimer() {
         BreakCDTimer = new CountDownTimer(BreakTimeLeft, 1000) {
             @Override
@@ -146,7 +151,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         BreakTimerRunning = true;
         BreakStartPause.setText("Pause");
     }
-
     private void pauseBreakTimer() {
         BreakCDTimer.cancel();
         BreakTimerRunning = false;
@@ -158,18 +162,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             NotificationTesti("Pomodoro", NotifiText, ongoing);
         }
     }
-
-    private void updatePomoCDText() {
-        PomoMin = (int) (PomoTimeLeft / 1000) / 60;
-        PomoSec = (int) (PomoTimeLeft / 1000) % 60;
-
-        String timeLeftFormat = String.format(Locale.getDefault(), "%02d:%02d", PomoMin, PomoSec);
-        PomoCdText.setText(timeLeftFormat);
-        NotifiText = "Work: " + timeLeftFormat;
-
-        NotificationTesti("Pomodoro", NotifiText, ongoing);
-    }
-
     private void updateBreakCDText() {
         BreakMin = (int) (BreakTimeLeft / 1000) / 60;
         BreakSec = (int) (BreakTimeLeft / 1000) % 60;
@@ -179,6 +171,12 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         NotifiText = "Break: " + timeLeftFormat;
 
         NotificationTesti("Pomodoro", NotifiText, ongoing);
+    }
+
+    //Notifications
+    public void DialogOpener(View v) {
+        DialogTesti dialog = new DialogTesti();
+        dialog.show(getSupportFragmentManager(), "dialog testi");
     }
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -197,29 +195,19 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     }
     @SuppressLint("MissingPermission")
     private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing) {
-        Intent intent = new Intent(this, Timer.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        Intent testIntent = new Intent(this, BroadcastTest.class);
-        testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent testPIntent = PendingIntent.getActivity(this, 0, testIntent, PendingIntent.FLAG_IMMUTABLE);
+        RemoteViews notifiTest = new RemoteViews(getPackageName(), R.layout.activity_notification_test);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Timer.this, "1")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle(otsikko)
-                .setContentText(notifikaatioteksti)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setOnlyAlertOnce(true)
-                .setOngoing(ongoing)
-                .setContentIntent(pendingIntent)
-                .addAction(R.drawable.ic_launcher_foreground, "Testi", testPIntent);
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomBigContentView(notifiTest);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(Timer.this);
         managerCompat.notify(1, builder.build());
+
     }
-    public void requestRuntimePermission()
-    {
+    public void requestRuntimePermission() {
         if (ContextCompat.checkSelfPermission(
                 this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
         {
@@ -246,14 +234,13 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             }
         }
     }
-    public void Back(View view)
-    {
+
+    //Buttons
+    public void Back(View view) {
         Intent intent = new Intent(Timer.this, MainActivity.class);
         startActivity(intent);
     }
-
-    public void notes(View view)
-    {
+    public void notes(View view) {
         Intent intent = new Intent(Timer.this, Notes.class);
         startActivity(intent);
     }
