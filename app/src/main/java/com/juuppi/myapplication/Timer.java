@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -197,23 +198,12 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     }
     @SuppressLint("MissingPermission")
     private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing) {
-        Intent intent = new Intent(this, Timer.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        Intent testIntent = new Intent(this, BroadcastTest.class);
-        testIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent testPIntent = PendingIntent.getActivity(this, 0, testIntent, PendingIntent.FLAG_IMMUTABLE);
+        RemoteViews notifiTest = new RemoteViews(getPackageName(), R.layout.activity_notification_test);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(Timer.this, "1")
-                .setSmallIcon(R.mipmap.ic_launcher_round)
-                .setContentTitle(otsikko)
-                .setContentText(notifikaatioteksti)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setOnlyAlertOnce(true)
-                .setOngoing(ongoing)
-                .setContentIntent(pendingIntent)
-                .addAction(R.drawable.ic_launcher_foreground, "Testi", testPIntent);
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomBigContentView(notifiTest);
 
         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(Timer.this);
         managerCompat.notify(1, builder.build());
