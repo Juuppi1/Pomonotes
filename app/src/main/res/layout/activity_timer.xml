@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Timer">
+
+    <TextView
+        android:id="@+id/WorkTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/work_time"
+        android:textSize="23sp"
+        android:typeface="normal"/>
+
+    <TextView
+        android:id="@+id/PomoCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/WorkTime"
+        android:layout_alignTop="@id/WorkTime"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="0:00"
+        android:textSize="20sp"
+        android:typeface="normal" />
+
+    <TextView
+        android:id="@+id/BreakTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@id/WorkTime"
+        android:layout_marginTop="120dp"
+        android:layout_alignStart="@id/WorkTime"
+        android:layout_marginStart="50dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/break_time"
+        android:textSize="23sp"
+        android:typeface="normal" />
+
+    <TextView
+        android:id="@+id/BreakCountDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/BreakTime"
+        android:layout_alignStart="@id/BreakTime"
+        android:layout_marginTop="50dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="0:00"
+        android:textSize="20sp"
+        android:typeface="normal" />
+
+    <Button
+        android:id="@+id/PomoStartPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/PomoCountDown"
+        android:layout_alignBaseline="@id/PomoCountDown"
+        android:layout_marginStart="220dp"
+        android:onClick="PomoStartPauseClicked"
+        android:text="@string/start" />
+
+    <Button
+        android:id="@+id/BreakStartPause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/BreakCountDown"
+        android:layout_alignBaseline="@id/BreakCountDown"
+        android:layout_marginStart="220dp"
+        android:onClick="BreakStartPauseClicked"
+        android:text="@string/start" />
+
+    <Button
+        android:id="@+id/SetTimeBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="150dp"
+        android:layout_marginStart="50dp"
+        android:onClick="DialogOpener"
+        android:text="@string/set_time" />
+
+    <Button
+        android:id="@+id/BackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/SetTimeBtn"
+        android:layout_centerHorizontal="true"
+        android:onClick="Back"
+        android:text="@string/back" />
+
+    <Button
+        android:id="@+id/SettingsBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/BackBtn"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:onClick="settings"
+        android:text="@string/settings" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:clickable="true"
+        android:onClick="notes"
+        android:focusable="true"
+        app:srcCompat="@android:drawable/ic_input_get" />
+
+</RelativeLayout>
