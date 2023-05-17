@@ -12,6 +12,7 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+
 public class DialogTesti extends AppCompatDialogFragment {
 
     private EditText PomoTime, BreakTime;
