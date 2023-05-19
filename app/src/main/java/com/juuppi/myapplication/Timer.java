@@ -10,15 +10,11 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -44,6 +40,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     private boolean Testi = false;
     NotificationCompat.Builder builder;
     NotificationManagerCompat managerCompat;
+    private DialogTesti.DialogListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +180,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         NotifiText = "Break: " + timeLeftFormat;
 
         NotificationTesti("Pomodoro", NotifiText, ongoing);
-
     }
 
     //Notifications
@@ -213,7 +209,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
 
         RemoteViews notifiTest = new RemoteViews(getPackageName(), R.layout.activity_notification_test);
 
-
         if (!Testi)
         {
         builder = new NotificationCompat.Builder(Timer.this, "1")
@@ -222,7 +217,8 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
                 .setContentTitle("Otsikko")
                 .setContentText("Tekstiä...")
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomBigContentView(notifiTest);
+                .setCustomBigContentView(notifiTest)
+                .setAutoCancel(false);
 
             managerCompat = NotificationManagerCompat.from(Timer.this);
 
@@ -231,7 +227,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     }
         else
         {
-            managerCompat = NotificationManagerCompat.from(Timer.this);
             builder.setContentTitle("Jali");
             managerCompat.notify(1, builder.build());
         }

@@ -7,7 +7,7 @@
     tools:context=".NotificationTest">
 
     <TextView
-        android:id="@+id/notifitextView22"
+        android:id="@+id/CountDownText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -19,7 +19,7 @@
         android:id="@+id/notifibutton22"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/notifitextView22"
+        android:layout_below="@id/CountDownText"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="179dp"
         android:layout_marginTop="10dp"
