@@ -236,10 +236,6 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     }
 
     //Buttons
-    public void Back(View view) {
-        Intent intent = new Intent(Timer.this, MainActivity.class);
-        startActivity(intent);
-    }
     public void notes(View view) {
         Intent intent = new Intent(Timer.this, Notes.class);
         startActivity(intent);
