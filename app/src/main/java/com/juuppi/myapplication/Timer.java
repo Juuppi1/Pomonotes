@@ -10,11 +10,15 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -37,6 +41,10 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     private boolean ongoing;
     private static final int PERMISSION_REQ_CODE = 2;
     private String NotifiText;
+    private boolean Testi = false;
+    NotificationCompat.Builder builder;
+    NotificationManagerCompat managerCompat;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +84,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             ongoing = true;
         }
     }
+
     private void startPomoTimer() {
         PomoCDTimer = new CountDownTimer(PomoTimeLeft, 1000) {
             @Override
@@ -96,17 +105,18 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         PomoTimerRunning = true;
         PomoStartPause.setText("Pause");
     }
+
     private void pausePomoTimer() {
         PomoCDTimer.cancel();
         PomoTimerRunning = false;
         PomoStartPause.setText("Start");
 
-        if (!PomoTimerRunning && !BreakTimerRunning)
-        {
+        if (!PomoTimerRunning && !BreakTimerRunning) {
             ongoing = false;
             NotificationTesti("Pomodoro", NotifiText, ongoing);
         }
     }
+
     private void updatePomoCDText() {
         PomoMin = (int) (PomoTimeLeft / 1000) / 60;
         PomoSec = (int) (PomoTimeLeft / 1000) % 60;
@@ -131,6 +141,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             ongoing = true;
         }
     }
+
     private void startBreakTimer() {
         BreakCDTimer = new CountDownTimer(BreakTimeLeft, 1000) {
             @Override
@@ -151,17 +162,18 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         BreakTimerRunning = true;
         BreakStartPause.setText("Pause");
     }
+
     private void pauseBreakTimer() {
         BreakCDTimer.cancel();
         BreakTimerRunning = false;
         BreakStartPause.setText("Start");
 
-        if (!PomoTimerRunning && !BreakTimerRunning)
-        {
+        if (!PomoTimerRunning && !BreakTimerRunning) {
             ongoing = false;
             NotificationTesti("Pomodoro", NotifiText, ongoing);
         }
     }
+
     private void updateBreakCDText() {
         BreakMin = (int) (BreakTimeLeft / 1000) / 60;
         BreakSec = (int) (BreakTimeLeft / 1000) % 60;
@@ -171,6 +183,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         NotifiText = "Break: " + timeLeftFormat;
 
         NotificationTesti("Pomodoro", NotifiText, ongoing);
+
     }
 
     //Notifications
@@ -178,6 +191,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         DialogTesti dialog = new DialogTesti();
         dialog.show(getSupportFragmentManager(), "dialog testi");
     }
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -193,20 +207,38 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             notificationManager.createNotificationChannel(channel);
         }
     }
+
     @SuppressLint("MissingPermission")
     private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing) {
 
         RemoteViews notifiTest = new RemoteViews(getPackageName(), R.layout.activity_notification_test);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(Timer.this, "1")
+
+        if (!Testi)
+        {
+        builder = new NotificationCompat.Builder(Timer.this, "1")
+
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Otsikko")
+                .setContentText("Tekstiä...")
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomBigContentView(notifiTest);
 
-        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(Timer.this);
-        managerCompat.notify(1, builder.build());
+            managerCompat = NotificationManagerCompat.from(Timer.this);
 
+        managerCompat.notify(1, builder.build());
+        Testi = true;
     }
+        else
+        {
+            managerCompat = NotificationManagerCompat.from(Timer.this);
+            builder.setContentTitle("Jali");
+            managerCompat.notify(1, builder.build());
+        }
+
+        }
+
+
     public void requestRuntimePermission() {
         if (ContextCompat.checkSelfPermission(
                 this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
