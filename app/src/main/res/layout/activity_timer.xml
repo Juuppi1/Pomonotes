@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/PomoCountDown"
         android:layout_alignBaseline="@id/PomoCountDown"
-        android:layout_marginStart="220dp"
+        android:layout_marginStart="140dp"
         android:onClick="PomoStartPauseClicked"
         android:text="@string/start" />
 
@@ -71,9 +71,8 @@
         android:id="@+id/BreakStartPause"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/BreakCountDown"
+        android:layout_alignStart="@+id/PomoStartPause"
         android:layout_alignBaseline="@id/BreakCountDown"
-        android:layout_marginStart="220dp"
         android:onClick="BreakStartPauseClicked"
         android:text="@string/start" />
 
@@ -83,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="150dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="30dp"
         android:onClick="DialogOpener"
         android:text="@string/set_time" />
 
@@ -102,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/BackBtn"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="30dp"
         android:onClick="settings"
         android:text="@string/settings" />
 
