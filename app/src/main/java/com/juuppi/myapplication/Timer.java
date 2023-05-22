@@ -218,12 +218,13 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
         {
             builder = new NotificationCompat.Builder(Timer.this, "1")
 
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Otsikko")
-                .setContentText("Tekstiä...")
-                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
-                .setCustomBigContentView(notifiTest)
-                .setAutoCancel(false);
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle("Otsikko")
+                    .setContentText("Tekstiä...")
+                    .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                    .setCustomBigContentView(notifiTest)
+                    .setOnlyAlertOnce(true)
+                    .setAutoCancel(false);
 
             managerCompat = NotificationManagerCompat.from(Timer.this);
 
@@ -236,7 +237,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
             managerCompat.notify(1, builder.build());
         }
 
-        }
+    }
 
 
     public void requestRuntimePermission() {
