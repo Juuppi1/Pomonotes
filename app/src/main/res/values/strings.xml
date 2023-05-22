@@ -20,4 +20,5 @@
     <string name="break_speakable">Start or stop break timer</string>
     <string name="search_icon_description">Search icon</string>
     <string name="search_notes_hint">Search notes</string>
+    <string name="notes_hint">Type here</string>
 </resources>

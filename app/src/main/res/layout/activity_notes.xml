@@ -18,7 +18,7 @@
         android:textSize="23sp"
         android:textStyle="bold" />
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/notesSearchLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,5 +43,61 @@
             android:hint="@string/search_notes_hint"
             android:importantForAutofill="no"
             android:inputType="text" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_below="@+id/notesSearchLayout"
+        android:gravity="start|top"
+        android:background="@null">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|top"
+            android:background="@null"
+            app:cardCornerRadius="6dp">
+
+            <TextView
+                android:id="@+id/note_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Header"/>
+
+            <TextView
+                android:id="@+id/note_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                android:text="Content"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <EditText
+        android:id="@+id/editTextTextMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
+        android:layout_below="@+id/notesSearchLayout"
+        android:gravity="start|top"
+        android:background="@null"
+        android:hint="@string/notes_hint"
+        android:inputType="textMultiLine"
+        android:visibility="gone" />
 </RelativeLayout>
