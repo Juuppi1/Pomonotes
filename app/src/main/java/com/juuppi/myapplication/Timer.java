@@ -189,18 +189,23 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
     }
 
     private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_MIN;
-            NotificationChannel channel = new NotificationChannel("1", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
+        // Check if NotificationChannel has been created.
+        int channelCreated = 0;
+        while (channelCreated < 1) {
+            // Create the NotificationChannel, but only on API 26+ because
+            // the NotificationChannel class is new and not in the support library
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence name = getString(R.string.channel_name);
+                String description = getString(R.string.channel_description);
+                int importance = NotificationManager.IMPORTANCE_MIN;
+                NotificationChannel channel = new NotificationChannel("1", name, importance);
+                channel.setDescription(description);
+                // Register the channel with the system; you can't change the importance
+                // or other notification behaviors after this
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+            channelCreated++;
         }
     }
 
@@ -211,7 +216,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
 
         if (!Testi)
         {
-        builder = new NotificationCompat.Builder(Timer.this, "1")
+            builder = new NotificationCompat.Builder(Timer.this, "1")
 
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Otsikko")
@@ -222,9 +227,9 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
 
             managerCompat = NotificationManagerCompat.from(Timer.this);
 
-        managerCompat.notify(1, builder.build());
-        Testi = true;
-    }
+            managerCompat.notify(1, builder.build());
+            Testi = true;
+        }
         else
         {
             builder.setContentTitle("Jali");
