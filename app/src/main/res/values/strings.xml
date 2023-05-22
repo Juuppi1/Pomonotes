@@ -18,4 +18,6 @@
     <string name="notes_fab_speakable">Open notes</string>
     <string name="work_speakable">Start or stop work timer</string>
     <string name="break_speakable">Start or stop break timer</string>
+    <string name="search_icon_description">Search icon</string>
+    <string name="search_notes_hint">Search notes</string>
 </resources>
