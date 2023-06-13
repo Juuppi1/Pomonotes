@@ -26,11 +26,11 @@ import java.util.List;
 
 public class Notes extends AppCompatActivity {
 
-    private RelativeLayout parentLayout;
-    public TextView text;
-    public EditText editText;
-    public int cardCount = 0;
+    private RelativeLayout parentLayout, FileLayout, WriteLayout;
+    public TextView TitleText, ContextText;
+    public EditText TitleChange, ContextChange;
     private ArrayList<NoteInfo> arrayList;
+
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     public int index;
@@ -39,11 +39,25 @@ public class Notes extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
+
+        FileLayout = findViewById(R.id.FileLayout);
+        WriteLayout = findViewById(R.id.WriteLayout);
         parentLayout = findViewById(R.id.ParentView);
+
+        TitleChange = findViewById(R.id.EditTitle);
+        ContextChange = findViewById(R.id.EditContext);
+
         arrayList = new ArrayList<>();
         }
-        public void Testi(View v){
-        arrayList.add(new NoteInfo("New Note", " "));
+
+        public void ChangeArrayInfo(View v){
+        arrayList.add(new NoteInfo("New Note", ""));
+        arrayList.get(index).setTitle(TitleChange.getText().toString());
+        arrayList.get(index).setContext(ContextChange.getText().toString());
+        }
+
+        public void NewCard(View v){
+        arrayList.add(new NoteInfo("New Note", ""));
         loadData();
         }
 
@@ -69,6 +83,20 @@ public class Notes extends AppCompatActivity {
             cardView.setRadius(3);
             cardView.setCardBackgroundColor(null);
 
+            //Korttiin nappi
+            cardView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    arrayList.add(new NoteInfo("New Note", " "));
+
+                    WriteLayout.setVisibility(View.VISIBLE);
+                    FileLayout.setVisibility(View.GONE);
+
+                    TitleChange.setText(arrayList.get(index).getTitle());
+                    ContextChange.setText(arrayList.get(index).getContext());
+                }
+            });
+
             LinearLayout linearLayout = new LinearLayout(context);
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -77,43 +105,38 @@ public class Notes extends AppCompatActivity {
             linearLayout.setLayoutParams(linearParams);
             linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-            // EditText inside card view
-            editText = new EditText(context);
-            LinearLayout.LayoutParams editParams = new LinearLayout.LayoutParams(
+            //Otsikko Teksti
+            TitleText = new TextView(context);
+            LinearLayout.LayoutParams Params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
             int padding = 8;
-            int editTextMargin = 8;
-            editParams.setMargins(0, 0, 0, editTextMargin);
-            editText.setLayoutParams(editParams);
+            int textViewMargin1 = 8;
+            Params.setMargins(0, 0, 0, textViewMargin1);
+            TitleText.setLayoutParams(Params);
 
-            editText.setSingleLine();
-            editText.setHint(arrayList.get(index).getTitle()); // Change title
-            editText.setPadding(padding, padding, padding, padding);
-            editText.setBackgroundResource(android.R.color.transparent);
+            TitleText.setSingleLine();
+            TitleText.setHint(arrayList.get(index).getTitle()); // Change title
+            TitleText.setPadding(padding, padding, padding, padding);
+            TitleText.setBackgroundResource(android.R.color.transparent);
 
-            linearLayout.addView(editText);
+            linearLayout.addView(TitleText);
 
-            // TextView inside card
-            text = new TextView(context);
+            // Sisältö Teksti
+            ContextText = new TextView(context);
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             );
-            int textViewMargin = 3;
-            textParams.setMargins(0, textViewMargin, 0, 0);
-            text.setLayoutParams(textParams);
+            int textViewMargin2 = 3;
+            textParams.setMargins(0, textViewMargin2, 0, 0);
+            ContextText.setLayoutParams(textParams);
 
-            text.setText(arrayList.get(index).getContext()); // Change context
-            text.setPadding(padding, padding, padding, padding);
+            ContextText.setText(arrayList.get(index).getContext()); // Change context
+            ContextText.setPadding(padding, padding, padding, padding);
 
-            text.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {}
-            });
-
-            linearLayout.addView(text);
+            linearLayout.addView(ContextText);
 
             cardView.addView(linearLayout);
             parentLayout.addView(cardView);
