@@ -19,7 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +50,8 @@ public class Notes extends AppCompatActivity {
         ContextChange = findViewById(R.id.EditContext);
 
         arrayList = new ArrayList<>();
+
+        loadData();
         }
 
         public void ChangeArrayInfo(View v){
@@ -56,92 +60,118 @@ public class Notes extends AppCompatActivity {
         arrayList.get(index).setContext(ContextChange.getText().toString());
         }
 
-        public void NewCard(View v){
-        arrayList.add(new NoteInfo("New Note", ""));
+        public void NewCard(View v)
+        {
+        arrayList.add(new NoteInfo("New Note", " "));
+        saveData();
         loadData();
         }
 
-    private void loadData() {
+        private void saveData(){
+        preferences=getApplicationContext().getSharedPreferences("DATA", MODE_PRIVATE);
+        editor = preferences.edit();
+
+        Gson gson = new Gson();
+
+        String json = gson.toJson(arrayList);
+        editor.putString("notes_data", json);
+        editor.apply();
+        }
+
+        private void loadData() {
+
         Context context = Notes.this;
         int margin = 50;
         int marginTop = margin;
 
         parentLayout.removeAllViews();
 
-        for (index = 0; index < arrayList.size(); index++) {
-            // Create card view
-            CardView cardView = new CardView(context);
-            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                    RelativeLayout.LayoutParams.MATCH_PARENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-            );
+        preferences = getApplicationContext().getSharedPreferences("DATA", MODE_PRIVATE);
 
-            params.setMargins(margin, marginTop, margin, margin);
+        Gson gson = new Gson();
+        String json = preferences.getString("notes_data",null);
+            Type type = new TypeToken<ArrayList<NoteInfo>>(){}.getType();
 
-            cardView.setLayoutParams(params);
-            cardView.setCardElevation(3);
-            cardView.setRadius(3);
-            cardView.setCardBackgroundColor(null);
+            arrayList=gson.fromJson(json,type);
 
-            //Korttiin nappi
-            cardView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    arrayList.add(new NoteInfo("New Note", " "));
+            if (arrayList==null){
+                arrayList=new ArrayList<>();
+            } else{
+                for (index = 0; index < arrayList.size(); index++) {
+                    // Create card view
+                    CardView cardView = new CardView(context);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                            RelativeLayout.LayoutParams.MATCH_PARENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    );
 
-                    WriteLayout.setVisibility(View.VISIBLE);
-                    FileLayout.setVisibility(View.GONE);
+                    params.setMargins(margin, marginTop, margin, margin);
 
-                    TitleChange.setText(arrayList.get(index).getTitle());
-                    ContextChange.setText(arrayList.get(index).getContext());
+                    cardView.setLayoutParams(params);
+                    cardView.setCardElevation(3);
+                    cardView.setRadius(3);
+                    cardView.setCardBackgroundColor(null);
+
+                    //Korttiin nappi
+                    cardView.setOnClickListener(new View.OnClickListener(){
+                        @Override
+                        public void onClick(View view){
+                            arrayList.add(new NoteInfo("New Note", " "));
+
+                            WriteLayout.setVisibility(View.VISIBLE);
+                            FileLayout.setVisibility(View.GONE);
+
+                            TitleChange.setText(arrayList.get(index).getTitle());
+                            ContextChange.setText(arrayList.get(index).getContext());
+                        }
+                    });
+
+                    LinearLayout linearLayout = new LinearLayout(context);
+                    LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    linearLayout.setLayoutParams(linearParams);
+                    linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+                    //Otsikko Teksti
+                    TitleText = new TextView(context);
+                    LinearLayout.LayoutParams Params = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    int padding = 8;
+                    int textViewMargin1 = 8;
+                    Params.setMargins(0, 0, 0, textViewMargin1);
+                    TitleText.setLayoutParams(Params);
+
+                    TitleText.setSingleLine();
+                    TitleText.setHint(arrayList.get(index).getTitle()); // Change title
+                    TitleText.setPadding(padding, padding, padding, padding);
+                    TitleText.setBackgroundResource(android.R.color.transparent);
+
+                    linearLayout.addView(TitleText);
+
+                    // Sisältö Teksti
+                    ContextText = new TextView(context);
+                    LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    int textViewMargin2 = 3;
+                    textParams.setMargins(0, textViewMargin2, 0, 0);
+                    ContextText.setLayoutParams(textParams);
+
+                    ContextText.setText(arrayList.get(index).getContext()); // Change context
+                    ContextText.setPadding(padding, padding, padding, padding);
+
+                    linearLayout.addView(ContextText);
+
+                    cardView.addView(linearLayout);
+                    parentLayout.addView(cardView);
+
+                    marginTop += cardView.getMeasuredHeight() + 3 * margin; // Update marginTop for the next card
                 }
-            });
-
-            LinearLayout linearLayout = new LinearLayout(context);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            linearLayout.setLayoutParams(linearParams);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-
-            //Otsikko Teksti
-            TitleText = new TextView(context);
-            LinearLayout.LayoutParams Params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            int padding = 8;
-            int textViewMargin1 = 8;
-            Params.setMargins(0, 0, 0, textViewMargin1);
-            TitleText.setLayoutParams(Params);
-
-            TitleText.setSingleLine();
-            TitleText.setHint(arrayList.get(index).getTitle()); // Change title
-            TitleText.setPadding(padding, padding, padding, padding);
-            TitleText.setBackgroundResource(android.R.color.transparent);
-
-            linearLayout.addView(TitleText);
-
-            // Sisältö Teksti
-            ContextText = new TextView(context);
-            LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-            int textViewMargin2 = 3;
-            textParams.setMargins(0, textViewMargin2, 0, 0);
-            ContextText.setLayoutParams(textParams);
-
-            ContextText.setText(arrayList.get(index).getContext()); // Change context
-            ContextText.setPadding(padding, padding, padding, padding);
-
-            linearLayout.addView(ContextText);
-
-            cardView.addView(linearLayout);
-            parentLayout.addView(cardView);
-
-            marginTop += cardView.getMeasuredHeight() + 3 * margin; // Update marginTop for the next card
-        }
+            }
     }
 }
