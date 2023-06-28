@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Notes">
 
-    <Button
-        android:id="@+id/NewCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="15dp"
-        android:text="Button"
-        android:onClick="NewCard"
-        android:visibility="visible" />
-
     <RelativeLayout
         android:id="@+id/WriteLayout"
         android:layout_width="match_parent"
@@ -54,6 +42,28 @@
             android:hint="Name"
             android:inputType="text" />
 
+        <Button
+            android:id="@+id/Save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:onClick="ChangeArrayInfo"
+            android:text="Save" />
+
+        <Button
+            android:id="@+id/Back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginBottom="0dp"
+            android:onClick="Back"
+            android:text="Back" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -61,6 +71,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="visible">
+
+        <Button
+            android:id="@+id/NewNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:text="New"
+            android:onClick="NewCard"/>
 
         <TextView
             android:id="@+id/notesHeader"
@@ -73,6 +94,36 @@
             android:textStyle="bold"
             android:visibility="visible" />
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/notesSearchLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="49dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/search_icon_description"
+                android:src="@drawable/baseline_search_24" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="2dp"
+                android:background="@null"
+                android:hint="@string/search_notes_hint"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <RelativeLayout
             android:id="@+id/ParentView"
             android:layout_width="320dp"
@@ -84,7 +135,7 @@
             android:layout_marginStart="50dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="50dp"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="50dp"
             android:background="@null"
             android:gravity="start|top"
             android:visibility="visible">
@@ -120,36 +171,6 @@
             </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/notesSearchLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="49dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/search_icon_description"
-                android:src="@drawable/baseline_search_24" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="2dp"
-                android:background="@null"
-                android:hint="@string/search_notes_hint"
-                android:importantForAutofill="no"
-                android:inputType="text" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </RelativeLayout>
 

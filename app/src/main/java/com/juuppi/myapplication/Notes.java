@@ -25,11 +25,11 @@ public class Notes extends AppCompatActivity {
     private RelativeLayout parentLayout, FileLayout, WriteLayout;
     public TextView TitleText, ContextText;
     public EditText TitleChange, ContextChange;
-    private ArrayList<NoteInfo> arrayList;
-
-    SharedPreferences preferences;
-    SharedPreferences.Editor editor;
-    public int index;
+    private ArrayList<NoteInfo> arrayList; //
+    private int ClickedIndex; //get right info
+    public int index; //erased = all cards info is the same
+    SharedPreferences preferences; //where info is saved
+    SharedPreferences.Editor editor; //used to edit preferences info
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,14 +49,25 @@ public class Notes extends AppCompatActivity {
     }
 
     public void ChangeArrayInfo(View v) {
-        arrayList.add(new NoteInfo("New Note", ""));
-        arrayList.get(index).setTitle(TitleChange.getText().toString());
-        arrayList.get(index).setContext(ContextChange.getText().toString());
+
+        if (ClickedIndex >= 0 && ClickedIndex < arrayList.size()){
+            arrayList.get(ClickedIndex).setTitle(TitleChange.getText().toString());
+            arrayList.get(ClickedIndex).setContext(ContextChange.getText().toString());
+            saveData();
+        }
+
     }
 
     public void NewCard(View v) {
         arrayList.add(new NoteInfo("New Note", " "));
         saveData();
+        loadData();
+    }
+
+    public void Back(View v) {
+        FileLayout.setVisibility(View.VISIBLE);
+        WriteLayout.setVisibility(View.GONE);
+
         loadData();
     }
 
@@ -76,7 +87,7 @@ public class Notes extends AppCompatActivity {
         int margin = 50;
         int marginTop = margin;
 
-        parentLayout.removeAllViews();
+        parentLayout.removeAllViews(); //remove old cards
 
         preferences = getApplicationContext().getSharedPreferences("DATA", MODE_PRIVATE);
 
@@ -90,6 +101,7 @@ public class Notes extends AppCompatActivity {
         if (arrayList == null) {
             arrayList = new ArrayList<>();
         } else {
+            //create new cards
             for (index = 0; index < arrayList.size(); index++) {
                 // Create card view
                 CardView cardView = new CardView(context);
@@ -105,18 +117,15 @@ public class Notes extends AppCompatActivity {
                 cardView.setRadius(3);
                 cardView.setCardBackgroundColor(null);
 
-                // Korttiin nappi
-                cardView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        arrayList.add(new NoteInfo("New Note", " "));
+                // card is clickable
+                cardView.setOnClickListener(view ->{
+                        ClickedIndex = parentLayout.indexOfChild(cardView);
 
-                        WriteLayout.setVisibility(View.VISIBLE);
-                        FileLayout.setVisibility(View.GONE);
+                            WriteLayout.setVisibility(View.VISIBLE);
+                            FileLayout.setVisibility(View.GONE);
 
-                        TitleChange.setText(arrayList.get(index).getTitle());
-                        ContextChange.setText(arrayList.get(index).getContext());
-                    }
+                            TitleChange.setText(arrayList.get(ClickedIndex).getTitle());
+                            ContextChange.setText(arrayList.get(ClickedIndex).getContext());
                 });
 
                 LinearLayout linearLayout = new LinearLayout(context);
@@ -127,7 +136,7 @@ public class Notes extends AppCompatActivity {
                 linearLayout.setLayoutParams(linearParams);
                 linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-                // Otsikko Teksti
+                // Card Title
                 TitleText = new TextView(context);
                 RelativeLayout.LayoutParams titleParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -143,7 +152,7 @@ public class Notes extends AppCompatActivity {
                 TitleText.setPadding(padding, padding, padding, padding);
                 TitleText.setBackgroundResource(android.R.color.transparent);
 
-                // Sisältö Teksti
+                // Card Context
                 ContextText = new TextView(context);
                 RelativeLayout.LayoutParams textParams = new RelativeLayout.LayoutParams(
                         RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -157,7 +166,7 @@ public class Notes extends AppCompatActivity {
                 ContextText.setText(arrayList.get(index).getContext()); // Change context
                 ContextText.setPadding(padding, padding, padding, padding);
 
-                // Nappi
+                // Button to Erase card
                 ImageButton button = new ImageButton(context);
                 RelativeLayout.LayoutParams buttonParams = new RelativeLayout.LayoutParams(100, 100);
                 buttonParams.addRule(RelativeLayout.ALIGN_PARENT_END);
@@ -166,15 +175,13 @@ public class Notes extends AppCompatActivity {
 
                 button.setImageResource(R.drawable.ic_launcher_foreground);
 
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+                //Button erases the card & saves changes
+                button.setOnClickListener(view ->{
                         int position = parentLayout.indexOfChild((View) view.getParent().getParent());
                         if (position >= 0 && position < arrayList.size()) {
                             arrayList.remove(position);
                             saveData();
                             loadData();
-                        }
                     }
                 });
                 linearLayout.addView(TitleText);
