@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
-public class Timer extends AppCompatActivity implements DialogTesti.DialogListener {
+public class Timer extends AppCompatActivity implements TimerDialog.DialogListener {
     private TextView PomoCdText, BreakCdText;
     private int PomoMin, BreakMin;
     private int PomoSec, BreakSec = 0;
@@ -185,7 +185,7 @@ public class Timer extends AppCompatActivity implements DialogTesti.DialogListen
 
     //Notifications
     public void DialogOpener(View v) {
-        DialogTesti dialog = new DialogTesti();
+        TimerDialog dialog = new TimerDialog();
         dialog.show(getSupportFragmentManager(), "dialog testi");
     }
 

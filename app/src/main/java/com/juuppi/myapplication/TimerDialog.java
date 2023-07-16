@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 
-public class DialogTesti extends AppCompatDialogFragment {
+public class TimerDialog extends AppCompatDialogFragment {
 
     private EditText PomoTime, BreakTime;
     private DialogListener listener;
@@ -24,7 +24,7 @@ public class DialogTesti extends AppCompatDialogFragment {
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_dialog, null);
+        View view = inflater.inflate(R.layout.layout_timer_dialog, null);
 
         builder.setView(view)
                 .setTitle("Otsikko")
