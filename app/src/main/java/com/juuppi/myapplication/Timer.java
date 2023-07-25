@@ -213,8 +213,6 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
     @SuppressLint("MissingPermission")
     private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing) {
 
-        RemoteViews notifiTest = new RemoteViews(getPackageName(), R.layout.activity_notification_test);
-
         if (!Testi)
         {
             builder = new NotificationCompat.Builder(Timer.this, "1")
