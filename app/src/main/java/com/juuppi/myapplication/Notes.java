@@ -163,7 +163,6 @@ public class Notes extends AppCompatActivity {
                 textParams.setMargins(0, textViewMargin2, 0, 0);
                 ContextText.setLayoutParams(textParams);
 
-                ContextText.setText(arrayList.get(index).getContext()); // Change context
                 ContextText.setPadding(padding, padding, padding, padding);
 
                 // Button to Erase card
