@@ -3,6 +3,10 @@
     <style name="Base.Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#DAD7CD</item>
+        <item name="colorOnPrimary">#3A5A40</item>
+        <item name="colorPrimaryContainer">#588157</item>
+        <item name="colorOnPrimaryContainer">#A3B18A</item>
     </style>
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />

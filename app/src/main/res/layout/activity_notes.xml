@@ -10,6 +10,7 @@
         android:id="@+id/WriteLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
         android:visibility="invisible">
 
 
@@ -70,6 +71,7 @@
         android:id="@+id/FileLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation"
         android:visibility="visible">
 
         <Button
@@ -112,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/search_icon_description"
-                android:src="@drawable/baseline_search_24" />
+                android:src="@drawable/ic_search" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -173,5 +175,16 @@
         </RelativeLayout>
 
     </RelativeLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:backgroundTint="?attr/colorPrimary"
+        app:itemIconTint="?attr/colorOnPrimary"
+        app:itemIconSize="30dp"
+        app:itemTextColor="?attr/colorOnPrimary"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </RelativeLayout>

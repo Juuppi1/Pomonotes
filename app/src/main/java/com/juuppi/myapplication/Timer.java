@@ -23,6 +23,8 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.Locale;
 
 public class Timer extends AppCompatActivity implements TimerDialog.DialogListener {
@@ -38,11 +40,17 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
     private boolean Testi = false;
     NotificationCompat.Builder builder;
     NotificationManagerCompat managerCompat;
+    private BottomNavigationView bottomNavigationView; // Used for navigation between views
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationHandler navigationHandler = new BottomNavigationHandler(this, bottomNavigationView);
+
+        bottomNavigationView.setOnItemSelectedListener(navigationHandler); // Give ability to change views
 
         PomoCdText = findViewById(R.id.PomoCountDown);
         PomoStartPause = findViewById(R.id.PomoStartPause);
@@ -75,11 +83,13 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         else if (BreakTimerRunning) {
             pauseBreakTimer();
             startPomoTimer();
-            ongoing = true;}
+            ongoing = true;
+        }
 
-        else {
+        else if (PomoTimeLeft > 0) {
             startPomoTimer();
-            ongoing = true;}
+            ongoing = true;
+        }
     }
 
     private void startPomoTimer() {
@@ -133,11 +143,13 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         else if (PomoTimerRunning) {
             pausePomoTimer();
             startBreakTimer();
-            ongoing = true;}
+            ongoing = true;
+        }
 
-        else {
+        else if (BreakTimeLeft > 0) {
             startBreakTimer();
-            ongoing = true;}
+            ongoing = true;
+        }
     }
 
     private void startBreakTimer() {
@@ -220,8 +232,8 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
             builder = new NotificationCompat.Builder(Timer.this, "1")
 
                     .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle("Otsikko")
-                    .setContentText(NotifiText)
+                    .setContentTitle(otsikko)
+                    .setContentText(notifikaatioteksti)
                     .setOnlyAlertOnce(true)
                     .setOngoing(true);
 
@@ -262,13 +274,5 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
                 requestRuntimePermission();
             }
         }
-    }
-
-    //Buttons
-    public void notes(View view) {
-        Intent intent = new Intent(Timer.this, Notes.class);
-        startActivity(intent);
-    }
-    public void settings(View view) {
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
@@ -13,11 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class Notes extends AppCompatActivity {
@@ -30,11 +33,17 @@ public class Notes extends AppCompatActivity {
     public int index; //erased = all cards info is the same
     SharedPreferences preferences; //where info is saved
     SharedPreferences.Editor editor; //used to edit preferences info
+    private BottomNavigationView bottomNavigationView; // Used for navigation between views
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        BottomNavigationHandler navigationHandler = new BottomNavigationHandler(this, bottomNavigationView);
+
+        bottomNavigationView.setOnItemSelectedListener(navigationHandler); // Give ability to change views
 
         FileLayout = findViewById(R.id.FileLayout);
         WriteLayout = findViewById(R.id.WriteLayout);
@@ -173,7 +182,7 @@ public class Notes extends AppCompatActivity {
                 buttonParams.addRule(RelativeLayout.ALIGN_BOTTOM, ContextText.getId());
                 button.setLayoutParams(buttonParams);
 
-                button.setImageResource(R.drawable.ic_launcher_foreground);
+                button.setImageResource(R.drawable.ic_delete_forever);
 
                 //Button erases the card & saves changes
                 button.setOnClickListener(view ->{
