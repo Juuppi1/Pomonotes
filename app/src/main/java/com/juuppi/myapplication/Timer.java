@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat;
 import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -103,7 +104,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
             @Override
             public void onFinish() {
                 ongoing = false;
-                NotificationTesti("Pomodoro", "Work time ended. It's time for a break!", ongoing);
+                NotificationTesti("Pomonotes", "Work time ended. It's time for a break!", false, true);
                 PomoTimerRunning = false;
                 PomoStartPause.setText("Start");
                 PomoCDTimer.cancel();
@@ -119,8 +120,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         PomoStartPause.setText("Start");
 
         if (!PomoTimerRunning && !BreakTimerRunning) {
-            ongoing = false;
-            NotificationTesti("Pomodoro", NotifiText, ongoing);
+            NotificationTesti("Pomonotes", NotifiText, false, true);
         }
     }
 
@@ -132,7 +132,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         PomoCdText.setText(timeLeftFormat);
         NotifiText = "Work: " + timeLeftFormat;
 
-        NotificationTesti("Pomodoro", NotifiText, ongoing);
+        NotificationTesti("Pomonotes", NotifiText, true, false);
     }
 
     //Break timer
@@ -162,8 +162,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
 
             @Override
             public void onFinish() {
-                ongoing = false;
-                NotificationTesti("Pomodoro", "Break time ended. It's time to continue working!", ongoing);
+                NotificationTesti("Pomonotes", "Break time ended. It's time to continue working!", false, true);
                 BreakTimerRunning = false;
                 BreakStartPause.setText("Start");
                 BreakCDTimer.cancel();
@@ -179,8 +178,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         BreakStartPause.setText("Start");
 
         if (!PomoTimerRunning && !BreakTimerRunning) {
-            ongoing = false;
-            NotificationTesti("Pomodoro", NotifiText, ongoing);
+            NotificationTesti("Pomonotes", NotifiText, false, true);
         }
     }
 
@@ -192,13 +190,13 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         BreakCdText.setText(timeLeftFormat);
         NotifiText = "Break: " + timeLeftFormat;
 
-        NotificationTesti("Pomodoro", NotifiText, ongoing);
+        NotificationTesti("Pomonotes", NotifiText, true, false);
     }
 
     //Notifications
     public void DialogOpener(View v) {
         TimerDialog dialog = new TimerDialog();
-        dialog.show(getSupportFragmentManager(), "dialog testi");
+        dialog.show(getSupportFragmentManager(), "Timer dialog");
     }
 
     private void createNotificationChannel() {
@@ -223,23 +221,29 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
     }
 
     @SuppressLint("MissingPermission")
-    private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing) {
+    private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing, Boolean showAlertAgain) {
+        Intent intent = new Intent(this, Timer.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
-        if (!Testi)
+        PendingIntent notifikaatioIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        builder = new NotificationCompat.Builder(Timer.this, "1")
+
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle(otsikko)
+                .setContentText(notifikaatioteksti)
+                .setContentIntent(notifikaatioIntent)
+                .setOngoing(ongoing);
+
+        if (showAlertAgain)
         {
-            builder = new NotificationCompat.Builder(Timer.this, "1")
-
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                    .setContentTitle(otsikko)
-                    .setContentText(notifikaatioteksti)
-                    .setOnlyAlertOnce(true)
-                    .setOngoing(true);
-
+            builder.setOnlyAlertOnce(false);
             managerCompat.notify(1, builder.build());
             Testi = true;
         }
         else
         {
+            builder.setOnlyAlertOnce(true);
             builder.setContentText(NotifiText);
             managerCompat.notify(1, builder.build());
         }
