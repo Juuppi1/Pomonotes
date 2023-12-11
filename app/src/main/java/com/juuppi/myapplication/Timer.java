@@ -38,7 +38,6 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
     private CountDownTimer PomoCDTimer, BreakCDTimer;
     private static final int PERMISSION_REQ_CODE = 2;
     private String NotifiText;
-    private boolean Testi = false;
     NotificationCompat.Builder builder;
     NotificationManagerCompat managerCompat;
     private BottomNavigationView bottomNavigationView; // Used for navigation between views
@@ -104,7 +103,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
             @Override
             public void onFinish() {
                 ongoing = false;
-                NotificationTesti("Pomonotes", "Work time ended. It's time for a break!", false, true);
+                NotificationTesti("Work time ended. It's time for a break!", false, true);
                 PomoTimerRunning = false;
                 PomoStartPause.setText("Start");
                 PomoCDTimer.cancel();
@@ -120,7 +119,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         PomoStartPause.setText("Start");
 
         if (!PomoTimerRunning && !BreakTimerRunning) {
-            NotificationTesti("Pomonotes", NotifiText, false, true);
+            NotificationTesti(NotifiText, false, true);
         }
     }
 
@@ -132,7 +131,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         PomoCdText.setText(timeLeftFormat);
         NotifiText = "Work: " + timeLeftFormat;
 
-        NotificationTesti("Pomonotes", NotifiText, true, false);
+        NotificationTesti(NotifiText, true, false);
     }
 
     //Break timer
@@ -162,7 +161,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
 
             @Override
             public void onFinish() {
-                NotificationTesti("Pomonotes", "Break time ended. It's time to continue working!", false, true);
+                NotificationTesti("Break time ended. It's time to continue working!", false, true);
                 BreakTimerRunning = false;
                 BreakStartPause.setText("Start");
                 BreakCDTimer.cancel();
@@ -178,7 +177,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         BreakStartPause.setText("Start");
 
         if (!PomoTimerRunning && !BreakTimerRunning) {
-            NotificationTesti("Pomonotes", NotifiText, false, true);
+            NotificationTesti(NotifiText, false, true);
         }
     }
 
@@ -190,7 +189,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         BreakCdText.setText(timeLeftFormat);
         NotifiText = "Break: " + timeLeftFormat;
 
-        NotificationTesti("Pomonotes", NotifiText, true, false);
+        NotificationTesti(NotifiText, true, false);
     }
 
     //Notifications
@@ -221,7 +220,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
     }
 
     @SuppressLint("MissingPermission")
-    private void NotificationTesti(String otsikko, String notifikaatioteksti, Boolean ongoing, Boolean showAlertAgain) {
+    private void NotificationTesti(String notifikaatioteksti, Boolean ongoing, Boolean showAlertAgain) {
         Intent intent = new Intent(this, Timer.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
@@ -230,7 +229,7 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         builder = new NotificationCompat.Builder(Timer.this, "1")
 
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(otsikko)
+                .setContentTitle("Pomonotes")
                 .setContentText(notifikaatioteksti)
                 .setContentIntent(notifikaatioIntent)
                 .setOngoing(ongoing);
@@ -239,12 +238,10 @@ public class Timer extends AppCompatActivity implements TimerDialog.DialogListen
         {
             builder.setOnlyAlertOnce(false);
             managerCompat.notify(1, builder.build());
-            Testi = true;
         }
         else
         {
             builder.setOnlyAlertOnce(true);
-            builder.setContentText(NotifiText);
             managerCompat.notify(1, builder.build());
         }
     }
