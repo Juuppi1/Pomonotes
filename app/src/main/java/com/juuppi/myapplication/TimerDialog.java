@@ -27,7 +27,7 @@ public class TimerDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.layout_timer_dialog, null);
 
         builder.setView(view)
-                .setTitle("Otsikko")
+                .setTitle(R.string.set_time)
 
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
