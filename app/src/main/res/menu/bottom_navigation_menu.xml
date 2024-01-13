@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menu_timer"
-        android:title="Pomodoro"
-        android:icon="@drawable/ic_timer" />
+        android:icon="@drawable/ic_timer"
+        android:title="Pomodoro" />
 
     <item
         android:id="@+id/menu_notes"
-        android:title="Notes"
-        android:icon="@drawable/ic_notes" />
+        android:icon="@drawable/ic_notes"
+        android:title="Notes" />
 
     <item
         android:id="@+id/menu_settings"

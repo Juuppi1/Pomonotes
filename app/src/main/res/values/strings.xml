@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
-    <string name="main_menu">Main menu</string>
+    <string name="app_name">Pomonotes</string>
     <string name="pomodoro">Pomodoro</string>
     <string name="notes">Notes</string>
     <string name="work_time">Work time</string>
