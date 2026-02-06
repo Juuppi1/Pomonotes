@@ -68,7 +68,7 @@ public class Notes extends AppCompatActivity {
     }
 
     public void NewCard(View v) {
-        arrayList.add(new NoteInfo("New Note", " "));
+        arrayList.add(new NoteInfo("New Note", ""));
         saveData();
         loadData();
     }
